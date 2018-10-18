@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {UsuariosService} from '../usuarios.service'; //Importar servicio
-import {Router} from '@angular/router';
-
+import { UsuariosService } from '../usuarios.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -11,14 +10,17 @@ import {Router} from '@angular/router';
 export class CrearCuentaComponent implements OnInit {
 
 	formulario:any;
-  constructor(private servicioUsuarios:UsuariosService,
-  	private reouter:Router) { 
+
+  constructor(
+  	private servicioUsuarios:UsuariosService,
+  	private router:Router
+  	) { 
 
   	this.formulario={
   		user:{
   			name:"",
-  			email:'',
-  			password:'',
+  			email:"",
+  			password:"",
   			password_confirmation:""
   		}
   	}
@@ -26,23 +28,29 @@ export class CrearCuentaComponent implements OnInit {
 
   ngOnInit() {
   }
-  crearCuenta(){
-  	this.servicioUsuarios.crearCuenta(this.formulario).subscribe(respuesta=>{	
-  		let autenticacion={
-  			auth:{
-  				email: this.formulario.user.email,
-  				password: this.formulario.user.password
-  			}
-  		};
-  			this.servicioUsuarios.iniciarSesion(autenticacion).subscribe(respuestaAuth=>{
-  				localStorage.setItem("sessionToken",respuestaAuth.jwt);
-  				this.router.navigate(['/articulos']);
-  				alert("Usuario creado")
-  			},error=>{alert("Fallo de autheticación")});
 
+  crearCuenta(){
+  	this.servicioUsuarios.
+  		crearCuenta(this.formulario).
+  		subscribe(respuesta=>{
+  			let autenticacion={
+  				auth:{
+  					email: this.formulario.user.email, 
+  					password: this.formulario.user.password
+  				}
+  			};
+  			this.servicioUsuarios.
+  				iniciarSesion(autenticacion).
+  				subscribe(respuestaAuth=>{
+  					localStorage.setItem("sessionToken",respuestaAuth.jwt);
+  					this.router.navigate(['/articulos']);
+  					alert("Usuario creado, bienvenido");
+  				},errorAuth=>{
+  					alert("Fallo la autenticación");
+  				});
   		},error=>{
-  			alert("No se ha podido crear el usuario, revisar consola")
-  		}
-  		}
+  			alert("No se ha podido crear el usuario, revisa la consola");
+  		});
   }
+
 }
