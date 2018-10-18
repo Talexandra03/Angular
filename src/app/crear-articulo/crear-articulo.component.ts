@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ArticulosService} from '../articulos.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-crear-articulo',
@@ -6,10 +8,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./crear-articulo.component.css']
 })
 export class CrearArticuloComponent implements OnInit {
+	articulo:any;
+  constructor(private servicioArticulos:ArticulosService, private router:Router) {
+  this.articulo={
+  	titulo:"",
+  	contenido:""
+  }
 
-  constructor() { }
+  }
 
   ngOnInit() {
-  }
+   }
+   crearArticulo(){
+   	this.servicioArticulos.crearArticulo(this.articulo).subscribe(respuesta=>{
+   		this.router.navigate(['/articulo', respuesta.id])
+   	}, error=>{
+   		alert("Error al crear el articulo")
+   	});
+   }
 
 }

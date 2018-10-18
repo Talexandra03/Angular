@@ -23,6 +23,8 @@ const rutas:Routes=[
   {path: 'articulos', component: ArticulosComponent},
   {path: 'iniciar_sesion', component: IniciarSesionComponent},
   {path: 'crear_cuenta', component: CrearCuentaComponent},
+  {path: 'articulo/:id', component: MostrarArticuloComponent},
+  {path: 'crear_articulo', component: CrearArticuloComponent},
   {path: '**', redirectTo: '/', pathMatch: 'full'}
 ];
 
